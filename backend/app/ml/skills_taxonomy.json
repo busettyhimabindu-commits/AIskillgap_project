@@ -1,0 +1,23 @@
+{
+  "Languages": [
+    "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin", "SQL", "HTML5", "CSS3", "Bash", "Shell", "R", "Dart"
+  ],
+  "Frameworks & Libraries": [
+    "React", "React Native", "Vue.js", "Angular", "Next.js", "Node.js", "Express.js", "FastAPI", "Django", "Flask", "Spring Boot", "ASP.NET Core", "Laravel", "Tailwind CSS", "Bootstrap", "Redux", "Zustand", "GraphQL", "REST API", "gRPC"
+  ],
+  "AI / ML & Data Science": [
+    "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Scikit-Learn", "OpenCV", "NLP", "Natural Language Processing", "Computer Vision", "Pandas", "NumPy", "Matplotlib", "Seaborn", "LangChain", "Hugging Face", "LLMs", "Generative AI", "Vector Databases", "Prompt Engineering"
+  ],
+  "Databases": [
+    "MySQL", "PostgreSQL", "MongoDB", "Redis", "SQLite", "Oracle", "Microsoft SQL Server", "Cassandra", "DynamoDB", "Elasticsearch", "Firebase", "Supabase"
+  ],
+  "Cloud & DevOps": [
+    "AWS", "Amazon Web Services", "Azure", "Google Cloud", "GCP", "Docker", "Kubernetes", "CI/CD", "GitHub Actions", "Terraform", "Ansible", "Linux", "Nginx", "Microservices", "Serverless", "Helm", "Prometheus", "Grafana"
+  ],
+  "Testing & Quality": [
+    "Jest", "Cypress", "PyTest", "Selenium", "Postman", "JUnit", "Unit Testing", "Integration Testing"
+  ],
+  "Soft Skills": [
+    "Communication", "Problem Solving", "Team Collaboration", "Agile", "Scrum", "Git", "GitHub", "System Design", "Code Review", "Time Management", "Critical Thinking"
+  ]
+}
