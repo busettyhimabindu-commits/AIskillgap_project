@@ -23,7 +23,15 @@ export const Register = () => {
       await register(fullName, email, password, targetRole);
       navigate('/dashboard');
     } catch (err) {
-      setErrorMsg(err.response?.data?.detail || "Registration failed. Try a different email.");
+      console.error("Registration error:", err);
+      console.error("Status:", err.response?.status);
+      console.error("Response:", err.response?.data);
+
+      setErrorMsg(
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        `Registration failed (${err.response?.status || "network error"})`
+      );
     } finally {
       setLoading(false);
     }
@@ -32,7 +40,7 @@ export const Register = () => {
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-md space-y-8">
-        
+
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/10">
@@ -44,7 +52,7 @@ export const Register = () => {
 
         {/* Card */}
         <div className="p-8 rounded-3xl bg-slate-800/60 border border-slate-700/80 shadow-2xl backdrop-blur-2xl space-y-6">
-          
+
           {errorMsg && (
             <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />

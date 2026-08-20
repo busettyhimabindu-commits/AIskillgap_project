@@ -7,26 +7,30 @@ logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
-# Try MySQL first; fallback to SQLite if MySQL fails
+# Connect to Supabase PostgreSQL
 try:
     engine = create_engine(
-        settings.MYSQL_DATABASE_URL,
+        settings.DATABASE_URL,
         pool_pre_ping=True,
         pool_recycle=3600
     )
+
     # Test connection
     with engine.connect() as conn:
-        logger.info("Successfully connected to MySQL database.")
-    DATABASE_TYPE = "MySQL"
-except Exception as e:
-    logger.warning(f"MySQL connection failed ({e}). Falling back to SQLite database.")
-    engine = create_engine(
-        settings.SQLITE_DATABASE_URL,
-        connect_args={"check_same_thread": False}
-    )
-    DATABASE_TYPE = "SQLite"
+        logger.info("Successfully connected to PostgreSQL database.")
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    DATABASE_TYPE = "PostgreSQL"
+
+except Exception as e:
+    logger.error(f"PostgreSQL database connection failed: {e}")
+    raise
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
 
 def get_db():
     db = SessionLocal()
