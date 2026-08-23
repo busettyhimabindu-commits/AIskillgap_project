@@ -21,17 +21,34 @@ export const Register = () => {
 
     try {
       await register(fullName, email, password, targetRole);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       console.error("Registration error:", err);
-      console.error("Status:", err.response?.status);
-      console.error("Response:", err.response?.data);
 
-      setErrorMsg(
-        err.response?.data?.detail ||
-        err.response?.data?.message ||
-        `Registration failed (${err.response?.status || "network error"})`
-      );
+      if (err.response) {
+        console.error("Status:", err.response.status);
+        console.error("Response:", err.response.data);
+
+        const detail = err.response.data?.detail;
+
+        if (Array.isArray(detail)) {
+          setErrorMsg(
+            detail.map((item) => item.msg).join(", ")
+          );
+        } else {
+          setErrorMsg(
+            detail ||
+            err.response.data?.message ||
+            `Registration failed (${err.response.status})`
+          );
+        }
+      } else if (err.request) {
+        setErrorMsg(
+          "Cannot connect to the server. Please check your backend."
+        );
+      } else {
+        setErrorMsg("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

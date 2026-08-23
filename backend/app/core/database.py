@@ -1,13 +1,13 @@
-import logging
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
+import logging
+
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
-# Connect to Supabase PostgreSQL
 try:
     engine = create_engine(
         settings.DATABASE_URL,
@@ -15,7 +15,6 @@ try:
         pool_recycle=3600
     )
 
-    # Test connection
     with engine.connect() as conn:
         logger.info("Successfully connected to PostgreSQL database.")
 
@@ -24,6 +23,7 @@ try:
 except Exception as e:
     logger.error(f"PostgreSQL database connection failed: {e}")
     raise
+
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -34,6 +34,7 @@ SessionLocal = sessionmaker(
 
 def get_db():
     db = SessionLocal()
+
     try:
         yield db
     finally:

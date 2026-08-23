@@ -1,3 +1,4 @@
+from sqlalchemy.sql.functions import user
 from datetime import datetime, timedelta
 import secrets
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -19,36 +20,46 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register", response_model=TokenResponse)
 def register_student(user_in: UserRegister, db: Session = Depends(get_db)):
-    existing_user = db.query(User).filter(User.email == user_in.email).first()
+    existing_user = db.query(User).filter(
+        User.email == user_in.email
+    ).first()
+
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this email already exists."
         )
-    
+
     hashed_pwd = get_password_hash(user_in.password)
+
     user = User(
         email=user_in.email,
         hashed_password=hashed_pwd,
         full_name=user_in.full_name,
         target_role=user_in.target_role or "Full Stack Developer"
     )
+
     db.add(user)
-    db.commit()
-    db.refresh(user)
+    db.flush()
 
     # Initialize empty student profile
     profile = StudentProfile(user_id=user.id)
     db.add(profile)
+
+    # Save user and profile together
     db.commit()
+    db.refresh(user)
 
     # Send welcome email notification
-    send_email_notification(
-        email_to=user.email,
-        subject="Welcome to SkillGap AI!",
-        template_type="welcome",
-        data={"full_name": user.full_name}
-    )
+    try:
+        send_email_notification(
+            email_to=user.email,
+            subject="Welcome to SkillGap AI!",
+            template_type="welcome",
+            data={"full_name": user.full_name}
+        )
+    except Exception as email_error:
+        print(f"Welcome email failed: {email_error}")
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)

@@ -1,25 +1,29 @@
 import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "SkillGap AI"
     API_V1_STR: str = "/api"
 
-    SECRET_KEY: str = "86dcd5732b6e46c394a611cc91b44c78_skillgap_ai_super_secret_key_2026"
+    SECRET_KEY: str = os.getenv(
+        "SECRET_KEY",
+        "change-this-secret-key-in-production"
+    )
+
     ALGORITHM: str = "HS256"
 
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
-    # Supabase PostgreSQL database URL
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL",
-        "postgresql+psycopg2://postgres:password@localhost:5432/postgres"
-    )
+    DATABASE_URL: str
 
-    class Config:
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+        extra="ignore"
+    )
 
 
 settings = Settings()

@@ -36,11 +36,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (full_name, email, password, target_role) => {
     const res = await api.post('/auth/register', {
-      full_name,
-      email,
-      password,
+      full_name: full_name,
+      email: email,
+      password: password,
       target_role: target_role || "Full Stack Developer",
     });
+    return res.data;
+
     const { access_token, refresh_token, user: userData } = res.data;
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('refresh_token', refresh_token);
