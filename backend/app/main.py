@@ -62,3 +62,8 @@ def root():
         "database": DATABASE_TYPE,
         "docs": "/docs"
     }
+@app.get("/health")
+def health():
+    return {
+        "status": "ok"
+    }

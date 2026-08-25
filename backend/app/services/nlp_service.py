@@ -3,6 +3,7 @@ import re
 import json
 import logging
 from typing import Dict, Any, List
+# pyrefly: ignore [missing-import]
 from pypdf import PdfReader
 
 logger = logging.getLogger(__name__)
